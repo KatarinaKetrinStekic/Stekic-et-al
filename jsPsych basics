@@ -29,11 +29,16 @@
 
 
 <script>
-//mora se učitati skripta za svaki plugin koji želimo da koristimo da bismo mogli da koristimo bilo koji plugin
-//ovaj deo prikazuje Loading ako se ostatak eksperimenta ne učita
+//we need to load in a script for every plugin we want to use
+//the body shows Loading... if the rest of the experiment doesn't load or if use fullscreen: true
+//timeline is the main variable which must be pushed every time we want to start a plugin
+
+//mora se učitati skripta za svaki plugin koji želimo da koristimo
+//ovaj deo prikazuje Loading ako se ostatak eksperimenta ne učita ili ako se  fullscreen: true
 //timeline se koristi kao glavna varijabla koja mora da se pokrene (push) svaki put kada želimo da pokrenemo neki plugin
 var expTimeline = [];
 
+//jsPsych text is used for basic info or debrief
 //jsPsych text koristimo za glavne informacije ili debrifing
 var welcome_block = {
   type: "text",
@@ -50,6 +55,7 @@ var welcome_block = {
 
 expTimeline.push(welcome_block);
 
+//jsPsych instructions is used for one or more paged instructions
 //jsPsych instructions koristimo za uputstva koja mogu biti na više strana
 var instructions = {
   type: 'instructions',
@@ -71,12 +77,13 @@ var instructions = {
 
 expTimeline.push(instructions);
 
+//with jsPsych consent_form we can make a form with several questions that must be answered
 //jsPsych consent_form koristimo za informisanu saglasnost koja može imati više obavezujućih opcija
 var consent_form = {
   type: "survey-multi-choice",
   horizontal: true,
-  //required: [true, true, true, true, true, true],
-  required: [false, false, false, false, false, false],
+  //required: [true, true, true, true, true, true], //we uncoment this
+  required: [false, false, false, false, false, false], //and delete this when we want to make answering obligatory
   questions: [
   "Imam dovoljno neophodnih informacija za pristanak.",
   "Razumem da mogu da odustanem od eksperimenta u svakom trenutku.",
@@ -95,6 +102,7 @@ expTimeline.push(consent_form);
 
 var endmessage = '';
 
+//jsPsych single-stim is used for a one stim reaction
 //jsPsych single-stim koristimo za prikazivanje jednog stimulusa na koji se traži reakcija
 var test_block = {
   type: 'single-stim',
@@ -108,6 +116,7 @@ var test_block = {
 
 expTimeline.push(test_block);
 
+//with jsPsych same-different they choose whether two stimuli are the same or not (in this case dangerous or not)
 //jsPsych same-different je postavka u kojoj ispitanik treba da odluči da su dva stimulusa ista ili nisu
 var dangerous_or_not = {
     type: 'same-different',
@@ -124,6 +133,7 @@ var dangerous_or_not = {
 
 expTimeline.push(dangerous_or_not);
 
+//jsPsych animation makes stimuli appear one after the other
 //jsPsych animation pravi animaciju tako da se stimulusi prikazuju jedan za drugim
 var animation_trial = {
     type: 'animation',
@@ -136,6 +146,7 @@ var animation_trial = {
 
   expTimeline.push(animation_trial);
 
+//jspsych button-response gives us button like response options
 //jspsych button-response daje stimulus sa mogućim opcijama u obliku dugmeta
   var trial = {
       type: 'button-response',
@@ -146,6 +157,8 @@ var animation_trial = {
 
     expTimeline.push(trial);
 
+////jspsych categorize gives them an opportunity to choose where to categorize the stimuli
+//for some reason it won't load the image but it puts it put as text
 //jspsych categorize služi da ispitanici biraju kojoj od ponuđenih kategorija stimulus pripada
 //iz nekog razloga neće da učita sliku već samo string kao stimulus
 var categorization_trial = {
@@ -162,6 +175,7 @@ prompt: "<p class='prompt'>Da li je ovaj mikrob opasan?</p>"
 
 expTimeline.push(categorization_trial);
 
+//jspsych categorize-animation is nice for priming, it records the reaction to the second stimuli
 //jspsych categorize-animation je zgodno koristiti za primovanje jer snima reakciju na drugi stimulus
 var animation_trial = {
   type: 'categorize-animation',
@@ -176,6 +190,7 @@ var animation_trial = {
 
 expTimeline.push(animation_trial);
 
+//jspsych free-sort makes a window in which you can mouse-drag stimuli
 //jspsych free-sort pravi prozor u kome se prevlacenje misa mogu pomerati stimulusi
 var sort_trial = {
     type: 'free-sort',
@@ -190,8 +205,10 @@ var sort_trial = {
 
 expTimeline.push(sort_trial);
 
+//jspsych multi-stim-multi-response gives out several stimuli and can record several different reactions
+//for some reason it won't put out both stimuli if timing_stim is -1 for both
 //jspsych multi-stim-multi-response daje mogucnost da se u toku jednog trial vise stimulusa prikaze i snimi vise razlicitih odgovora na njih
-//iz nekog razloga nece da prikaze oba stimulusa kada je timing_stim ya oba -1
+//iz nekog razloga nece da prikaze oba stimulusa kada je timing_stim za oba -1
 var multi_stim = {
     type: 'multi-stim-multi-response',
     stimuli: ["86-J-0-1.bmp", "7-C-20-4.bmp"],
@@ -202,6 +219,8 @@ var multi_stim = {
 
 expTimeline.push(multi_stim);
 
+//jsPsych survey text is nice for when we need them to type their info in
+//jsPsych survey text je zgodan kad nam treba da ispitanici ukucaju njigove informacije
 var zahvalnica = {
   type: 'survey-text',
   questions: ["Vaš broj indeksa u formatu PS150045"],
@@ -216,7 +235,7 @@ expTimeline.push(zahvalnica);
 
 jsPsych.init({
        timeline: expTimeline,
-       fullscreen: true
+       fullscreen: true //makes the exp go fullscreen from the beginning
    });
 
 
